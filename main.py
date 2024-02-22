@@ -9,6 +9,7 @@ def readMatrix():
       numbers = np.array([int(n) for n in line.split()])
       rows.append(numbers)
     f.close()
+  # print(np.mat(rows, float))
   return np.mat(rows, float)
 
 def inputGauss(mat: np.matrix):
@@ -24,7 +25,33 @@ def inputJacobi(mat: np.matrix):
   # read data that you might need, like x(0) and delta
   # put jacobi function as a method in methods.py
   # call jacobi method here after reading inputs
-  pass
+
+  # Adjusting data read to fit function format
+  A = []
+  b = []
+  for i in range(mat.shape[0]):
+    lista = []
+    for j in range(mat.shape[1]):
+      if j == mat.shape[1] - 1:
+        b.append(mat[i,j])
+      else:
+        lista.append(mat[i,j])
+    A.append(lista)
+  A = np.mat(A)
+  b = np.array(b)
+
+  x0 = np.array([])
+  # Reading data needed
+  print("Insira os valores do vetor x0:")
+  x1 = []
+  for i in range(b.shape[0]):
+    x1.append(float(input()))
+  x1 = np.array(x1)
+
+  print()
+  delta = float(input("Insira a precisão desejada: "))
+  
+  print(jacobi(A, b, x0, x1, delta))
 
 def inputSeidel(mat: np.matrix):
   # read data that you might need, like x(0) and delta
@@ -38,10 +65,13 @@ inputs = {
   "3": inputSeidel
 }
 
-if __name__ == '__main__':
+def main():
   print("\n*** DIGITE A MATRIZ NO ARQUIVO matrix.txt ***\n")
   print("Escolha o método a ser utilizado")
   print(" 1 - Eliminação de Gauss")
   print(" 2 - Gauss-Jacobi")
   print(" 3 - Gauss-Seidel\n")
   inputs[input("Método: ")](readMatrix())
+
+if __name__ == '__main__':
+  main()
