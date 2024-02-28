@@ -6,10 +6,9 @@ def readMatrix():
   with open('./matrix.txt', 'r') as f:
     lines = f.readlines()
     for line in lines:
-      numbers = np.array([int(n) for n in line.split()])
+      numbers = np.array([float(n) for n in line.split()])
       rows.append(numbers)
     f.close()
-  # print(np.mat(rows, float))
   return np.mat(rows, float)
 
 def inputGauss(mat: np.matrix):
@@ -22,10 +21,6 @@ def inputGauss(mat: np.matrix):
       print('Infinitas soluções')
 
 def inputJacobi(mat: np.matrix):
-  # read data that you might need, like x(0) and delta
-  # put jacobi function as a method in methods.py
-  # call jacobi method here after reading inputs
-
   # Adjusting data read to fit function format
   A = []
   b = []
