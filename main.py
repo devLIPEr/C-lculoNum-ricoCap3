@@ -13,7 +13,15 @@ def readMatrix():
 
 def inputGauss(mat: np.matrix):
   try:
-    print(gaussElimination(mat))
+    if mat.shape[1] >= mat.shape[0]+2:
+      print('Infinitas soluções')
+    elif mat.shape[1] != 2:
+      print(gaussElimination(mat))
+    else:
+      s = ''
+      for i in range(mat.shape[0]):
+        s += f'x{i+1}: {mat.item(i, -1):.4f}\n'
+      print(s)
   except (ZeroDivisionError):
     if mat.item((-1, -1)) != 0 and mat.item((-1, -2)) == 0:
       print('Sistema sem solução')
