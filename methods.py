@@ -42,24 +42,6 @@ def gaussElimination(mat: np.matrix):
     s += f'x{i+1}: {xs[i]:.4f}\n'
   return s
 
-# Possível
-# mat = np.mat([[1, 2, 10], [2, -1, 5]], float)
-
-# Impossível
-# mat = np.mat([[1, 1, 10], [1, 1, 5]], float)
-
-# Infinitas soluções
-# mat = np.mat([[1, 1, 3], [2, 2, 6]], float)
-
-# try:
-#   print(gaussElimination(mat))
-# except (ZeroDivisionError):
-#   if mat.item((-1, -1)) != 0 and mat.item((-1, -2)) == 0:
-#     print('Sistema sem solução')
-#   else:
-#     print('Infinitas soluções')
-
-
 def verificaFormato(A, b):
   return A.shape[0] == A.shape[1] and A.shape[0] == len(b)
 
