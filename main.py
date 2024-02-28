@@ -12,24 +12,21 @@ def readMatrix():
   return np.mat(rows, float)
 
 def inputGauss(mat: np.matrix):
-  # if mat.shape[0]+1 == mat.shape[1]:
-    try:
-      if mat.shape[1] >= mat.shape[0]+2:
-        print('Infinitas soluções')
-      elif mat.shape[1] != 2:
-        print(gaussElimination(mat))
-      else:
-        s = ''
-        for i in range(mat.shape[0]):
-          s += f'x{i+1}: {mat.item(i, -1):.4f}\n'
-        print(s)
-    except (ZeroDivisionError):
-      if mat.item((-1, -1)) != 0 and mat.item((-1, -2)) == 0:
-        print('Sistema sem solução')
-      else:
-        print('Infinitas soluções')
-  # else:
-    # print("Formato da matriz errado")
+  try:
+    if mat.shape[1] >= mat.shape[0]+2:
+      print('Infinitas soluções')
+    elif mat.shape[1] != 2:
+      print(gaussElimination(mat))
+    else:
+      s = ''
+      for i in range(mat.shape[0]):
+        s += f'x{i+1}: {mat.item(i, -1):.4f}\n'
+      print(s)
+  except (ZeroDivisionError):
+    if mat.item((-1, -1)) != 0 and mat.item((-1, -2)) == 0:
+      print('Sistema sem solução')
+    else:
+      print('Infinitas soluções')
 
 def inputJacobi(mat: np.matrix):
   # Adjusting data read to fit function format
