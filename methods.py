@@ -6,8 +6,8 @@ np.set_printoptions(formatter={'float_kind':'{:.4f}'.format})
 def gaussElimination(mat: np.matrix):
   rows = mat.shape[0]
   cols = mat.shape[1]
-  xs = np.zeros(rows)
-  indexXs = [i for i in range(rows)] # if columns are swapped
+  xs = np.zeros(cols-1)
+  indexXs = [i for i in range(cols-1)] # if columns are swapped
 
   for i in range(rows-1):
     if mat.item(i,i) == 0:
@@ -30,12 +30,13 @@ def gaussElimination(mat: np.matrix):
         mj = mat.item(j,i)/mat.item(i,i)
         mat[j] = mat[j]-mj*mat[i]
         mat.itemset((j, i), 0)
-  
+
   for i in range(rows-1, -1, -1):
-    leftSide = mat.item((i, cols-1))
-    for j in range(cols-2, i, -1):
-      leftSide -= mat.item(i, j)*xs[indexXs[j]]
-    xs[indexXs[i]] = leftSide/mat.item(i, i)
+    rightSide = mat.item((i, len(xs)))
+    idx = (cols-2)-(rows-1-i)
+    for j in range(cols-2, idx, -1):
+      rightSide -= mat.item(i, j)*xs[indexXs[j]]
+    xs[indexXs[idx]] = rightSide/mat.item(i, idx)
 
   s = ''
   for i in range(len(xs)):
