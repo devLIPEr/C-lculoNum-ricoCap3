@@ -69,7 +69,7 @@ def verificacaoRecursiva(possiveisPosicoes, indice, vetor):
             return (True, vetor)
       return (False, None)
 
-def criterioConvergencia(A):
+def criterioConvergencia(A, b : np.array):
    possiveisPosicoes = []
 
    for i in range(A.shape[0]):                              # Para cada linha da matriz
@@ -93,12 +93,20 @@ def criterioConvergencia(A):
    if not resultado[0]:
       return (False, None)
   
-   lista = []
-   for posicao in resultado[1]:
-      lista.append(A[posicao].tolist()[0])
+   # lista = [None]
+   # for posicao in resultado[1]:
+   #    lista.append(A[posicao].tolist()[0])
+
+   lista = [None for i in range(A.shape[0])]
+   b = b.tolist()
+   bNovo = b.copy()
+   for i in range(len(resultado[1])):
+      lista[resultado[1][i]] = A[i].tolist()[0]
+      bNovo[resultado[1][i]] = b[i]
 
    matriz = np.mat(lista)
-   return (True, matriz)
+   bNovo = np.array(bNovo)
+   return (True, matriz, bNovo)
 
 def calculo(A, b, x0):
    x1 = []
@@ -137,10 +145,11 @@ def jacobi(A : np.matrix, b : np.array, x0 : np.array, x1 : np.array, delta : fl
       return("Erro de formato") 
    it = 0
    
-   resultadoCC = criterioConvergencia(A)
+   resultadoCC = criterioConvergencia(A, b)
 
    if resultadoCC[0]:
       A = resultadoCC[1]
+      b = resultadoCC[2]
       while erroAbsoluto(x0, x1, it) > delta:
          x0 = x1.copy()
          x1 = calculo(A,b,x0)
@@ -192,12 +201,15 @@ def gaussSeidelInitialAproximation(mat: np.matrix, x_k: np.array) -> np.array:
       return x_k
 
 def gaussSeidelConvergenceCriterion(mat: np.matrix, size: int) -> bool:
-   beta = np.zeros(size)
+   beta = np.zeros(size, float)
    for i in range(size):
       for j in range(size): 
          if i != j:
-            beta[i] += (abs(mat.item(i, j)) * (beta[j] if j < i else 1)) 
-      beta[i] /= abs(mat.item(i, i))
+            beta[i] += (abs(mat.item(i, j)) * (beta[j] if j < i else 1))
+      if abs(mat.item(i, i)) == 0:
+         beta[i] = 2
+      else:
+         beta[i] /= abs(mat.item(i, i))
    return max(beta) < 1
 
 def gaussSeidelSwappRows(mat: np.matrix) -> List:
@@ -207,9 +219,12 @@ def gaussSeidelSwappRows(mat: np.matrix) -> List:
    for p in itertools.permutations(mat):
       newMat = []
       for line in p:
-         newMat.append(line)
-      
-      if gaussSeidelConvergenceCriterion(mat, numberOfRows):
+         l = []
+         for i in range(line.shape[1]):
+            l.append(line.item(0,i))
+         newMat.append(l)
+      newMat = np.mat(newMat)
+      if gaussSeidelConvergenceCriterion(newMat, numberOfRows):
          return np.matrix(newMat)
    
    return None
