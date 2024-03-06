@@ -200,7 +200,6 @@ def gaussSeidelConvergenceCriterion(mat: np.matrix, size: int) -> bool:
       beta[i] /= abs(mat.item(i, i))
    return max(beta) < 1
 
-# TODO
 def gaussSeidelSwappRows(mat: np.matrix) -> List:
    numberOfRows, numberOfColumns = mat.shape
    matAuxiliar = mat.copy()
